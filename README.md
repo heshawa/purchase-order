@@ -1,24 +1,147 @@
-# Getting Started
+# Purchase Order
 
-### Reference Documentation
-For further reference, please consider the following sections:
+Spring boot project to illustrate spring boot capabilities
 
-* [Official Gradle documentation](https://docs.gradle.org)
-* [Spring Boot Gradle Plugin Reference Guide](https://docs.spring.io/spring-boot/3.4.5/gradle-plugin)
-* [Create an OCI image](https://docs.spring.io/spring-boot/3.4.5/gradle-plugin/packaging-oci-image.html)
-* [Spring Web](https://docs.spring.io/spring-boot/3.4.5/reference/web/servlet.html)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/3.4.5/reference/data/sql.html#data.sql.jpa-and-spring-data)
+## 📦 Technologies Used
 
-### Guides
-The following guides illustrate how to use some features concretely:
+- Java 17
+- Spring Boot 3.x
+- Gradle (or Maven)
 
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
+## 🏁 Getting Started
 
-### Additional Links
-These additional references should also help you:
+### ✅ Prerequisites
 
-* [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
+Make sure you have:
 
+- Java 17+
+- Gradle installed (`./gradlew` wrapper is also included)
+- Add Lombok plugin to your IDE to avoid Lombok IDE error indications
+
+
+### 🔧 Running the App
+
+- If your default java version is not Java 17
+    - Update .project-env file with your java 17 path
+    - Execute command
+        ```bash 
+        source .project-env
+        ```
+- Execute following commands
+     ```bash
+     ./gradlew clean build
+     ./gradlew bootRun
+    ```
+
+- Execute in debug mode
+     ```bash
+     ./gradlew clean build
+     ./gradlew bootRun --debug-jvm
+    ```
+
+### 📖 API Guide
+
+#### order API
+- **POST** `/order/create` - HTTP Response Code: **200**
+  Creates and adding a new inventory item. Returns the created item details.
+    - Request sample 1 - success
+      ```javascript
+      Request Body
+      {
+        "name":"Screw driver",
+        "description": "3mm flower head",
+        "price": 15.50,
+        "quantity":25
+      }
+      ```
+      ```javascript
+      Response - HTTP/1.1 200
+      Content-Type: application/json
+      {
+        "name": "Sample Item",
+        "description": "This is a sample item.",
+        "price": "19.99",
+        "quantity": "10"
+      }
+      ```
+    - Request sample 2 - no content
+      ```javascript
+      Request Body
+      {}
+      ```
+      ```javascript
+      HTTP/1.1 204
+      ```
+- **GET** `/inventory/get/{itemName}` - HTTP Response Code: **200**
+  Search an inventory items by its name. Returns the item details.
+    - Request sample 1 - success
+      ```javascript
+      Request
+      http://localhost:8080/inventory/hammer
+      ```
+      ```javascript
+      Response - HTTP/1.1 200
+      Content-Type: application/json
+      [
+        {
+            "name": "Sledge Hammer",
+            "description": "3cm head, Wooden handle and 1Kg weight",
+            "price": "35.25",
+            "quantity": "15"
+        },
+        {
+            "name": "Nail Hammer",
+            "description": "2cm head, Wooden handle and 750g weight",
+            "price": "27.00",
+            "quantity": "15"
+        }
+      ]
+      ```
+    - Request sample 2 - no results
+      ```javascript
+      Request
+      http://localhost:8080/inventory/aaa
+      ```
+      ```javascript
+      Response - HTTP/1.1 200
+      Content-Type: application/json
+      {
+        "message": "No items with the given name",
+        "description": ""
+      }
+      ```
+
+### 📖 DB Guide
+Following instructions are based on values in `application.properties` file
+- Visit `http://localhost:8080/h2-console` to view data inserted to DB
+- Configuration values are as follow
+    - Driver Class: `org.h2.Driver`
+    - JDBC URL: `jdbc:h2:file:./data/inventoryDB`
+    - Username: `adminInventory`
+    - Password:
+- Press test connectivity button to check if connection is successful
+- Press connect button to view data in DB
+- Write SQL queries in the SQL command box and press run button to execute the query
+
+### 🧪 Running Unit Tests
+
+Unit tests are written using JUnit 5 and Mockito. To execute the tests, run the following command:
+
+```bash
+./gradlew test
+```
+To run in debug mode
+```bash
+./gradlew test --debug-jvm
+```
+
+To view the test report
+```javascript
+http://localhost:63342/inventoryControl/build/reports/tests/test/index.html
+```
+
+Clone the repository:
+
+```bash
+git clone https://github.com/heshawa/inventory-control.git
+cd your-repo
