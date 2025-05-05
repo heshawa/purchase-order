@@ -36,7 +36,6 @@ public class OrderController {
 			return ResponseEntity.badRequest().body("Order line is empty");
 		}
 		//Reserve inventory
-		//List<Integer> itemIds = orderDto.getOrderLine().stream().map(OrderLineDTO::getItemId).toList();
 		List<ItemDTO> allocateOrder = orderDto.getOrderLine().stream()
 				.map(orderLine->convertToItemDTO(orderLine))
 				.collect(Collectors.toList());
@@ -79,10 +78,19 @@ public class OrderController {
 			return ResponseEntity.internalServerError().body("Error while creating order");
 		}
 		//Update payments
+		
 		//Post to queue for delivery
-		ResponseMessage message = new ResponseMessage("");
+		ResponseMessage message = null;
+		try {
+			orderService.publishOrderDetailsToTopic(order);
+		} catch (Exception e) {
+			log.warn("Error while publishing data to topic. Order ID: {}", order.getOrderId(),e);
+			message = new ResponseMessage("Error while publishing data to topic.");
+			message.setSuccess(false);
+		}
+
 		message.getData().add(order);
-		return ResponseEntity.ok(order);
+		return ResponseEntity.ok(message);
 	}
 	
 	private ItemDTO convertToItemDTO(OrderLineDTO orderLineDTO){

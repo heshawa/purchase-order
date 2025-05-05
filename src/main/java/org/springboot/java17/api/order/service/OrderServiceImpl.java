@@ -13,6 +13,8 @@ import org.springboot.java17.api.order.model.OrderLine;
 import org.springboot.java17.api.order.model.OrderRepository;
 import org.springboot.java17.api.order.util.OrderUtilConstants.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -25,6 +27,12 @@ public class OrderServiceImpl implements OrderService{
 	
 	@Autowired
 	private OrderRepository orderRepository;
+	
+	@Autowired
+	private KafkaTemplate kafkaTemplate;
+	
+	@Value("${springboot.purchase.order.topic}")
+	private String topicName;
 
 	@Override
 	public OrderDTO createOrder(OrderDTO orderDTO) throws Exception {
@@ -41,8 +49,13 @@ public class OrderServiceImpl implements OrderService{
 		
 		return convertToOderDTO(createdOrder);
 		
-	}	
-	
+	}
+
+	@Override
+	public void publishOrderDetailsToTopic(OrderDTO orderDTO) throws Exception {
+		kafkaTemplate.send(topicName,orderDTO.getOrderId().toString(),orderDTO);
+	}
+
 	private Order convertToOrder(OrderDTO orderDTO) throws ParseException {
 		Order order = new Order();
 		if(!StringUtils.isEmpty(orderDTO.getOrderId())){
