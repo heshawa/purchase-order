@@ -5,7 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import org.springboot.java17.api.ResponseMessage;
+import org.springboot.java17.api.order.dto.ItemDTO;
 import org.springboot.java17.api.order.dto.OrderDTO;
 import org.springboot.java17.api.order.dto.OrderLineDTO;
 import org.springboot.java17.api.order.model.Order;
@@ -14,10 +17,13 @@ import org.springboot.java17.api.order.model.OrderRepository;
 import org.springboot.java17.api.order.util.OrderUtilConstants.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.MediaType;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +33,10 @@ public class OrderServiceImpl implements OrderService{
 	
 	@Autowired
 	private OrderRepository orderRepository;
-	
+
+	@Autowired
+	private WebClient webClient;
+
 	@Autowired
 	private KafkaTemplate kafkaTemplate;
 	
@@ -54,6 +63,16 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	public void publishOrderDetailsToTopic(OrderDTO orderDTO) throws Exception {
 		kafkaTemplate.send(topicName,orderDTO.getOrderId().toString(),orderDTO);
+	}
+
+	@Override
+	public ResponseMessage<ItemDTO> makeInventoryReservation(List<ItemDTO> orderItems) throws Exception {
+		return webClient.post().uri("/allocate")
+				.contentType(MediaType.APPLICATION_JSON).bodyValue(orderItems)
+				.retrieve()
+				.bodyToMono(new ParameterizedTypeReference<ResponseMessage<ItemDTO>>() {})
+				.block();
+
 	}
 
 	private Order convertToOrder(OrderDTO orderDTO) throws ParseException {
