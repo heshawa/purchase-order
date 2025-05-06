@@ -20,6 +20,8 @@ dependencies {
 
 	implementation 'org.springframework.kafka:spring-kafka'
 
+	implementation 'org.springboot.java17:common-dto-lib'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
