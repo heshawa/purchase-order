@@ -5,13 +5,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springboot.java17.api.ResponseMessage;
-import org.springboot.java17.api.order.dto.ItemDTO;
+import org.springboot.java17.api.common.dto.ItemDTO;
 import org.springboot.java17.api.order.dto.OrderDTO;
 import org.springboot.java17.api.order.dto.OrderLineDTO;
 import org.springboot.java17.api.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;

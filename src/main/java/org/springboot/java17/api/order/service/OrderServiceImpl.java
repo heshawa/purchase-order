@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springboot.java17.api.ResponseMessage;
-import org.springboot.java17.api.order.dto.ItemDTO;
+import org.springboot.java17.api.common.dto.ItemDTO;
 import org.springboot.java17.api.order.dto.OrderDTO;
 import org.springboot.java17.api.order.dto.OrderLineDTO;
 import org.springboot.java17.api.order.model.Order;

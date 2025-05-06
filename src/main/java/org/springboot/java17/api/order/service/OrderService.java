@@ -3,7 +3,7 @@ package org.springboot.java17.api.order.service;
 import java.util.List;
 
 import org.springboot.java17.api.ResponseMessage;
-import org.springboot.java17.api.order.dto.ItemDTO;
+import org.springboot.java17.api.common.dto.ItemDTO;
 import org.springboot.java17.api.order.dto.OrderDTO;
 
 public interface OrderService {
