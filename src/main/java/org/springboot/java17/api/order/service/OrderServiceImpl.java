@@ -8,13 +8,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.springboot.java17.api.ResponseMessage;
+import org.springboot.java17.api.common.constant.OrderStatus;
 import org.springboot.java17.api.common.dto.ItemDTO;
-import org.springboot.java17.api.order.dto.OrderDTO;
-import org.springboot.java17.api.order.dto.OrderLineDTO;
+import org.springboot.java17.api.common.dto.OrderDTO;
+import org.springboot.java17.api.common.dto.OrderLineDTO;
 import org.springboot.java17.api.order.model.Order;
 import org.springboot.java17.api.order.model.OrderLine;
 import org.springboot.java17.api.order.model.OrderRepository;
-import org.springboot.java17.api.order.util.OrderUtilConstants.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import org.springboot.java17.api.order.util.OrderUtilConstants.OrderStatus;
+import org.springboot.java17.api.common.constant.OrderStatus;
 
 import jakarta.persistence.*;
 
