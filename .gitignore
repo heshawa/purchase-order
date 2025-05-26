@@ -45,3 +45,5 @@ bin/
 
 ### H2 DB files ###
 data/
+
+common-dto
